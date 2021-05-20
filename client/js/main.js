@@ -15,6 +15,9 @@ const addMessage = (...messages) => {
     });
 };
 
+const socket = io();
+
+socket.on('message', message => addMessage(message));
 
 document.addEventListener('DOMContentLoaded', function () {
     fetch('http://localhost:3000/messages')
@@ -36,11 +39,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 "text": textElem.value
             })
         })
-            .then(res => res.json())
-            .then(data => {
-                addMessage(data);
-                textElem.value = "";
-            });
+            .then(() => textElem.value = "")
     }
 
 });
