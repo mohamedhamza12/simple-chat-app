@@ -1,8 +1,6 @@
 const deploymentUrl = "https://nodejs-chat-app-demo.herokuapp.com";
 //const deploymentUrl = "http://localhost:3000";
 
-console.log('hellow from js!');
-
 const addMessage = (...messages) => {
     const messagesDiv = document.getElementById('messages');
     messages.forEach(message => {
@@ -40,9 +38,13 @@ socket.on('deleteall', () => deleteAllMessages());
 socket.on('onlinecountupdate', updateOnlineUsersCount);
 
 document.addEventListener('DOMContentLoaded', function () {
+    console.log('dom content loaded');
     fetch(`${deploymentUrl}/messages`)
         .then(res => res.json())
-        .then(data => addMessage(...data));
+        .then(data => {
+            console.log('fetched messages: ', data);
+            addMessage(...data);
+        });
 
     const sendButton = document.getElementById('send-button');
     sendButton.onclick = () => {
