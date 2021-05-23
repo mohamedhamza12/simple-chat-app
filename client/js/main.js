@@ -1,4 +1,5 @@
-const deploymentUrl = "https://nodejs-chat-app-demo.herokuapp.com";
+//const deploymentUrl = "https://nodejs-chat-app-demo.herokuapp.com";
+const deploymentUrl = "http://localhost:3000";
 
 const addMessage = (...messages) => {
     const messagesDiv = document.getElementById('messages');
