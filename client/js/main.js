@@ -1,3 +1,5 @@
+const config = require('../config.json');
+
 const addMessage = (...messages) => {
     const messagesDiv = document.getElementById('messages');
     messages.forEach(message => {
@@ -35,7 +37,7 @@ socket.on('deleteall', () => deleteAllMessages());
 socket.on('onlinecountupdate', updateOnlineUsersCount);
 
 document.addEventListener('DOMContentLoaded', function () {
-    fetch('http://localhost:3000/messages')
+    fetch(`${config.deploymentUrl}/messages`)
         .then(res => res.json())
         .then(data => addMessage(...data));
 
@@ -44,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const senderElem = document.getElementById('name-input');
         const textElem = document.getElementById('message-input');
 
-        fetch('http://localhost:3000/messages', {
+        fetch(`${config.deploymentUrl}/messages`, {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json"
@@ -59,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const clearAllButton = document.getElementById('clear-all');
     clearAllButton.onclick = () => {
-        fetch('http://localhost:3000/messages', {
+        fetch(`${config.deploymentUrl}/messages`, {
             method: 'DELETE'
         });
     }

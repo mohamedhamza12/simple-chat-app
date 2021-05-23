@@ -1,7 +1,8 @@
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
-const env = require('./env');
+require('dotenv').config();
+const config = require('./config');
 
 const app = express();
 const http = require('http').Server(app);
@@ -11,7 +12,7 @@ app.use(express.static(path.join(__dirname, 'client')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-const dbUrl = env.dbdbConnectionString;
+const dbUrl = config.dbdbConnectionString;
 
 const Message = mongoose.model('Message', {
     sender: String,
