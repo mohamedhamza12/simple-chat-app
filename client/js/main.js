@@ -20,7 +20,7 @@ const addMessage = (...messages) => {
 
 const deleteAllMessages = () => {
     const messages = document.getElementById('messages').children;
-    
+
     //starting loop at the end of the list because children property is live meaning messages will be updated each time the document changes
     for (let i = messages.length - 1; i >= 0; i--)
         messages[i].remove();
@@ -31,9 +31,49 @@ const updateOnlineUsersCount = count => {
     countSpan.textContent = count;
 }
 
-const socket = io();
+const updateTabTitleOnMessageUpdate = (interval) => {
+    let intervalId = null;
+    let unseenMessages = 0;
 
-socket.on('message', message => addMessage(message));
+    const clearTitle = () => {
+        clearInterval(intervalId);
+        unseenMessages = 0;
+        document.title = 'Simple Chat App';
+    }
+
+    const incrementUnseenMessages = () => {
+        clearInterval(intervalId);
+        unseenMessages++;
+        let defaultTitle = false;
+        intervalId = setInterval(() => {
+            document.title = defaultTitle ? 'Simple Chat App' : `(${unseenMessages}) New Messages!`;
+            defaultTitle = !defaultTitle;
+        }, interval)
+    };
+
+    return {
+        newMessage: incrementUnseenMessages,
+        reset: clearTitle
+    }
+};
+
+const socket = io();
+const notificationHandler = updateTabTitleOnMessageUpdate(2000);
+
+let isWindowActive = true;
+
+window.onblur = () => isWindowActive = false;
+
+window.onfocus = () => {
+    isWindowActive = true;
+    notificationHandler.reset();
+};
+
+socket.on('message', message => {
+    addMessage(message);
+    if (!isWindowActive)
+        notificationHandler.newMessage();
+});
 socket.on('deleteall', () => deleteAllMessages());
 socket.on('onlinecountupdate', updateOnlineUsersCount);
 
@@ -71,7 +111,7 @@ document.addEventListener('DOMContentLoaded', function () {
         fetch(`${deploymentUrl}/messages`, {
             method: 'DELETE'
         })
-        .catch(err => console.error("Messages deletion failed: ", err));
+            .catch(err => console.error("Messages deletion failed: ", err));
     }
 
 });

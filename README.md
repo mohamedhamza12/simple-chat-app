@@ -12,6 +12,7 @@ Currently it supports one big room, which all users share, and in which all user
 * Instantly send and receive messages on all open devices
 * Clear all messages (deletes all messages for good for all users)
 * Online users indicator
+* Browser tab title new messages indicator
 ## Setup
 
 To run the application locally: 
