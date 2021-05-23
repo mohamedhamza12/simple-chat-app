@@ -1,4 +1,4 @@
-const config = require('../config.json');
+const deploymentUrl = "https://nodejs-chat-app-demo.herokuapp.com";
 
 const addMessage = (...messages) => {
     const messagesDiv = document.getElementById('messages');
@@ -37,7 +37,7 @@ socket.on('deleteall', () => deleteAllMessages());
 socket.on('onlinecountupdate', updateOnlineUsersCount);
 
 document.addEventListener('DOMContentLoaded', function () {
-    fetch(`${config.deploymentUrl}/messages`)
+    fetch(`${deploymentUrl}/messages`)
         .then(res => res.json())
         .then(data => addMessage(...data));
 
@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const senderElem = document.getElementById('name-input');
         const textElem = document.getElementById('message-input');
 
-        fetch(`${config.deploymentUrl}/messages`, {
+        fetch(`${deploymentUrl}/messages`, {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json"
@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const clearAllButton = document.getElementById('clear-all');
     clearAllButton.onclick = () => {
-        fetch(`${config.deploymentUrl}/messages`, {
+        fetch(`${deploymentUrl}/messages`, {
             method: 'DELETE'
         });
     }
