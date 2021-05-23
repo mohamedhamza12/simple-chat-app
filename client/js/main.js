@@ -47,6 +47,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const sendButton = document.getElementById('send-button');
     sendButton.onclick = () => {
+        console.log('send button clicked');
         const senderElem = document.getElementById('name-input');
         const textElem = document.getElementById('message-input');
 
@@ -61,13 +62,16 @@ document.addEventListener('DOMContentLoaded', function () {
             })
         })
             .then(() => textElem.value = "")
+            .catch(err => console.error('Message creation failed: ', err));
     }
 
     const clearAllButton = document.getElementById('clear-all');
     clearAllButton.onclick = () => {
+        console.log("Clear all button clicked");
         fetch(`${deploymentUrl}/messages`, {
             method: 'DELETE'
-        });
+        })
+        .catch(err => console.error("Messages deletion failed: ", err));
     }
 
 });
