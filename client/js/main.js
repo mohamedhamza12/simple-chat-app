@@ -38,11 +38,9 @@ socket.on('deleteall', () => deleteAllMessages());
 socket.on('onlinecountupdate', updateOnlineUsersCount);
 
 document.addEventListener('DOMContentLoaded', function () {
-    console.log('dom content loaded');
     fetch(`${deploymentUrl}/messages`)
         .then(res => res.json())
         .then(data => {
-            console.log('fetched messages: ', data);
             addMessage(...data);
         })
         .catch(err => console.error('An error has occurred: ', err));

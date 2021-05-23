@@ -11,6 +11,10 @@ const io = require('socket.io')(http);
 app.use(express.static(path.join(__dirname, 'client')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    next();
+});
 
 const dbUrl = config.dbdbConnectionString;
 
