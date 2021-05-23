@@ -1,0 +1,3 @@
+{
+    "dbConnectionUrl": "@devcluster.zn1mi.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+}
