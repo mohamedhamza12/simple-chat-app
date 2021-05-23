@@ -21,12 +21,18 @@ const deleteAllMessages = () => {
     //starting loop at the end of the list because children property is live meaning messages will be updated each time the document changes
     for (let i = messages.length - 1; i >= 0; i--)
         messages[i].remove();
+};
+
+const updateOnlineUsersCount = count => {
+    const countSpan = document.getElementById('online-users').lastElementChild;
+    countSpan.textContent = count;
 }
 
 const socket = io();
 
 socket.on('message', message => addMessage(message));
 socket.on('deleteall', () => deleteAllMessages());
+socket.on('onlinecountupdate', updateOnlineUsersCount);
 
 document.addEventListener('DOMContentLoaded', function () {
     fetch('http://localhost:3000/messages')

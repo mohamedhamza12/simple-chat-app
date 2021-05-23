@@ -58,9 +58,18 @@ app.delete('/messages', (request, response) => {
         })
 });
 
+let onlineUsersCount = 0;
 io.on('connection', (socket) => {
     console.log('New user connected: ', socket.id);
+    onlineUsersCount++;
+    io.emit('onlinecountupdate', onlineUsersCount);
+    socket.on('disconnect', (reason) => {
+        onlineUsersCount--;
+        io.emit('onlinecountupdate', onlineUsersCount);
+    });
 });
+
+
 
 mongoose.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('mongodb connection successful'))
