@@ -15,9 +15,18 @@ const addMessage = (...messages) => {
     });
 };
 
+const deleteAllMessages = () => {
+    const messages = document.getElementById('messages').children;
+    
+    //starting loop at the end of the list because children property is live meaning messages will be updated each time the document changes
+    for (let i = messages.length - 1; i >= 0; i--)
+        messages[i].remove();
+}
+
 const socket = io();
 
 socket.on('message', message => addMessage(message));
+socket.on('deleteall', () => deleteAllMessages());
 
 document.addEventListener('DOMContentLoaded', function () {
     fetch('http://localhost:3000/messages')
@@ -40,6 +49,13 @@ document.addEventListener('DOMContentLoaded', function () {
             })
         })
             .then(() => textElem.value = "")
+    }
+
+    const clearAllButton = document.getElementById('clear-all');
+    clearAllButton.onclick = () => {
+        fetch('http://localhost:3000/messages', {
+            method: 'DELETE'
+        });
     }
 
 });
