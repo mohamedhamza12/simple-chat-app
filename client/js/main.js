@@ -44,7 +44,8 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(data => {
             console.log('fetched messages: ', data);
             addMessage(...data);
-        });
+        })
+        .catch(err => console.error('An error has occurred: ', err));
 
     const sendButton = document.getElementById('send-button');
     sendButton.onclick = () => {
