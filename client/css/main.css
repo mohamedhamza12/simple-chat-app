@@ -1,0 +1,8 @@
+#online-users .fa-circle {
+    color: green;
+}
+
+#messages {
+    height: 400px; 
+    overflow: auto;
+}
