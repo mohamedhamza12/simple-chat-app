@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
-const config = require('./config.json');
+const env = require('./env');
 
 const app = express();
 const http = require('http').Server(app);
@@ -11,7 +11,7 @@ app.use(express.static(path.join(__dirname, 'client')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-const dbUrl = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}${config.dbConnectionUrl}`;
+const dbUrl = env.dbdbConnectionString;
 
 const Message = mongoose.model('Message', {
     sender: String,
