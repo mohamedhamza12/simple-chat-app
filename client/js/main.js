@@ -37,7 +37,6 @@ socket.on('deleteall', () => deleteAllMessages());
 socket.on('onlinecountupdate', updateOnlineUsersCount);
 
 document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById('new-button').onclick = () => alert('Hello');
     fetch(`${deploymentUrl}/messages`)
         .then(res => res.json())
         .then(data => addMessage(...data));
