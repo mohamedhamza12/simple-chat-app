@@ -2,6 +2,7 @@
 
 A simple full stack node.js chat application built with express, socket.io, and mongoose.
 
+![Application Screenshot](https://raw.githubusercontent.com/mohamedhh/simple-chat-app/main/public/img/app-screen.png)
 ## Setup
 
 After cloning the repository, run `npm install` at the root directory to install dependencies.
