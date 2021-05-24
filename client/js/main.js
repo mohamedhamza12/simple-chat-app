@@ -1,19 +1,20 @@
-const deploymentUrl = "https://nodejs-chat-app-demo.herokuapp.com";
-//const deploymentUrl = "http://localhost:3000";
+//const deploymentUrl = "https://nodejs-chat-app-demo.herokuapp.com";
+const deploymentUrl = "http://localhost:3000";
 
 const addMessage = (...messages) => {
     const messagesDiv = document.getElementById('messages');
     messages.forEach(message => {
         const containerDiv = document.createElement('DIV');
-        const senderHeading = document.createElement('H3');
-        const messageDiv = document.createElement('DIV');
+        const senderSpan = document.createElement('SPAN');
+        const messageSpan = document.createElement('SPAN');
 
-        senderHeading.className = "message-sender text-muted";
-        messageDiv.className = "message-text";
-
-        senderHeading.append(message.sender);
-        messageDiv.append(message.text);
-        containerDiv.append(senderHeading, messageDiv);
+        containerDiv.className = "mb-1";
+        senderSpan.className = "message-sender text-white-50";
+        messageSpan.className = "message-text text-white";
+        
+        senderSpan.append(message.sender + ": ");
+        messageSpan.append(message.text);
+        containerDiv.append(senderSpan, messageSpan);
         messagesDiv.append(containerDiv);
     });
 };
@@ -87,7 +88,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const sendButton = document.getElementById('send-button');
     sendButton.onclick = () => {
-        console.log('send button clicked');
         const senderElem = document.getElementById('name-input');
         const textElem = document.getElementById('message-input');
 
@@ -107,7 +107,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const clearAllButton = document.getElementById('clear-all');
     clearAllButton.onclick = () => {
-        console.log("Clear all button clicked");
         fetch(`${deploymentUrl}/messages`, {
             method: 'DELETE'
         })
