@@ -11,11 +11,10 @@ const io = require('socket.io')(http);
 app.use(express.static(path.join(__dirname, 'client')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use((req, res, next) => {
+app.use((req, res) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     res.header("Access-Control-Allow-Methods", "GET, POST, DELETE");
-    next();
 });
 
 const dbUrl = config.dbdbConnectionString;
@@ -40,7 +39,7 @@ app.get('/messages', (request, response) => {
 
 app.get('/messages/:user', (request, response) => {
     const user = request.params.user;
-    Message.find({sender: user})
+    Message.find({ sender: user })
         .then(messages => {
             response.status(200);
             response.send(messages);
@@ -81,7 +80,7 @@ app.delete('/messages', (request, response) => {
 
 app.delete('/messages/:id', (request, response) => {
     const id = request.params.id;
-    Message.deleteOne({_id: id})
+    Message.deleteOne({ _id: id })
         .then(() => {
             io.emit('deleteone', id);
             response.sendStatus(200);
