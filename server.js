@@ -79,6 +79,19 @@ app.delete('/messages', (request, response) => {
         })
 });
 
+app.delete('/messages/:id', (request, response) => {
+    const id = request.params.id;
+    Message.deleteOne({_id: id})
+        .then(() => {
+            io.emit('deleteone', id);
+            response.sendStatus(200);
+        })
+        .catch((err) => {
+            console.log('Messages deletion failed: ', err);
+            response.sendStatus(500);
+        })
+});
+
 let onlineUsersCount = 0;
 io.on('connection', (socket) => {
     console.log('New user connected: ', socket.id);

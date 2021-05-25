@@ -1,23 +1,55 @@
 const deploymentUrl = "https://nodejs-chat-app-demo.herokuapp.com";
 //const deploymentUrl = "http://localhost:3000";
 
+const showLoadingScreen = () => {
+    document.getElementById('loading-screen').className = "show-loading";
+}
+
+const hideLoadingScreen = () => {
+    document.getElementById('loading-screen').className = "";
+}
+
 const addMessage = (...messages) => {
     const messagesDiv = document.getElementById('messages');
     messages.forEach(message => {
         const containerDiv = document.createElement('DIV');
         const senderSpan = document.createElement('SPAN');
         const messageSpan = document.createElement('SPAN');
+        const xIcon = document.createElement('I');
 
-        containerDiv.className = "mb-1";
-        senderSpan.className = "message-sender text-white-50";
+        containerDiv.className = "message-container p-1 rounded mb-1 d-flex align-items-center";
+        containerDiv.dataset.id = message._id;
+        senderSpan.className = "message-sender me-2 text-white-50";
         messageSpan.className = "message-text text-white";
-        
-        senderSpan.append(message.sender + ": ");
+        xIcon.className = "delete-message-icon fas fa-times ms-auto d-none";
+
+        containerDiv.onmouseover = () => {
+            xIcon.classList.remove('d-none');
+        }
+
+        containerDiv.onmouseout = () => {
+            xIcon.classList.add('d-none');
+        }
+
+        xIcon.onclick = () => {
+            showLoadingScreen();
+            fetch(`${deploymentUrl}/messages/${containerDiv.dataset.id}`, {
+                method: 'DELETE'
+            })
+                .finally(hideLoadingScreen);
+        }
+
+        senderSpan.append(`${message.sender}: `);
         messageSpan.append(message.text);
-        containerDiv.append(senderSpan, messageSpan);
+        containerDiv.append(senderSpan, messageSpan, xIcon);
         messagesDiv.append(containerDiv);
     });
 };
+
+const deleteOneMessage = id => {
+    const messageContainerDiv = document.querySelector(`[data-id='${id}']`);
+    messageContainerDiv.remove();
+}
 
 const deleteAllMessages = () => {
     const messages = document.getElementById('messages').children;
@@ -76,6 +108,7 @@ socket.on('message', message => {
         notificationHandler.newMessage();
 });
 socket.on('deleteall', () => deleteAllMessages());
+socket.on('deleteone', deleteOneMessage)
 socket.on('onlinecountupdate', updateOnlineUsersCount);
 
 document.addEventListener('DOMContentLoaded', function () {

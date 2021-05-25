@@ -6,3 +6,35 @@
     height: 400px; 
     overflow-y: auto;
 }
+
+.message-container:hover {
+    background-color: #f8f9fa;
+}
+
+.message-container:hover .message-text {
+    color: #212529 !important;
+}
+
+.message-container:hover .message-sender {
+    color: rgba(0, 0, 0, 0.5) !important;
+}
+
+.message-container .delete-message-icon {
+    color: red;
+    cursor: pointer;
+}
+
+#loading-screen {
+    background-color: rgba(255, 255, 255, 0.6);
+    position: fixed;
+    z-index: 1000;
+    width: 100%;
+    height: 100%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+#loading-screen.show-loading {
+    display: flex;
+}
