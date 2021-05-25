@@ -38,6 +38,19 @@ app.get('/messages', (request, response) => {
 
 });
 
+app.get('/messages/:user', (request, response) => {
+    const user = request.params.user;
+    Message.find({sender: user})
+        .then(messages => {
+            response.status(200);
+            response.send(messages);
+        })
+        .catch((err) => {
+            console.log('Getting messages from db was unsuccessful: ', err);
+            response.sendStatus(500);
+        });
+})
+
 app.post('/messages', (request, response) => {
     const message = new Message(request.body);
     message.save()
