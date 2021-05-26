@@ -54,8 +54,8 @@ app.get('/messages/:user', (request, response) => {
 app.post('/messages', (request, response) => {
     const message = new Message(request.body);
     message.save()
-        .then(() => {
-            io.emit('message', request.body);
+        .then(res => {
+            io.emit('message', res);
             response.status(201);
             response.send(request.body);
         })

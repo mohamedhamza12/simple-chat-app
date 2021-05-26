@@ -1,5 +1,5 @@
-//const deploymentUrl = "https://nodejs-chat-app-demo.herokuapp.com";
-const deploymentUrl = "http://localhost:3000";
+const deploymentUrl = "https://nodejs-chat-app-demo.herokuapp.com";
+//const deploymentUrl = "http://localhost:3000";
 
 const showLoadingScreen = () => {
     document.getElementById('loading-screen').className = "show-loading";
