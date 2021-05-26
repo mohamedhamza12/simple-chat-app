@@ -1,5 +1,5 @@
-const deploymentUrl = "https://nodejs-chat-app-demo.herokuapp.com";
-//const deploymentUrl = "http://localhost:3000";
+//const deploymentUrl = "https://nodejs-chat-app-demo.herokuapp.com";
+const deploymentUrl = "http://localhost:3000";
 
 const showLoadingScreen = () => {
     document.getElementById('loading-screen').className = "show-loading";
@@ -21,7 +21,7 @@ const addMessage = (...messages) => {
         containerDiv.dataset.id = message._id;
         senderSpan.className = "message-sender me-2 text-white-50";
         messageSpan.className = "message-text text-white";
-        xIcon.className = "delete-message-icon fas fa-times ms-auto d-none";
+        xIcon.className = "delete-message-icon fas fa-times ms-auto me-1 d-none";
 
         containerDiv.onmouseover = () => {
             xIcon.classList.remove('d-none');
@@ -43,6 +43,7 @@ const addMessage = (...messages) => {
         messageSpan.append(message.text);
         containerDiv.append(senderSpan, messageSpan, xIcon);
         messagesDiv.append(containerDiv);
+
     });
 };
 
@@ -120,22 +121,30 @@ document.addEventListener('DOMContentLoaded', function () {
         .catch(err => console.error('An error has occurred: ', err));
 
     const sendButton = document.getElementById('send-button');
-    sendButton.onclick = () => {
+    sendButton.onclick = e => {
         const senderElem = document.getElementById('name-input');
         const textElem = document.getElementById('message-input');
+        const messageForm = document.getElementById('message-form');
 
-        fetch(`${deploymentUrl}/messages`, {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                "sender": senderElem.value,
-                "text": textElem.value
+        if (!messageForm.checkValidity()) {
+            e.preventDefault();
+            e.stopPropagation();
+            messageForm.className = 'was-validated';
+        } else {
+            messageForm.className = '';
+            fetch(`${deploymentUrl}/messages`, {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    "sender": senderElem.value,
+                    "text": textElem.value
+                })
             })
-        })
-            .then(() => textElem.value = "")
-            .catch(err => console.error('Message creation failed: ', err));
+                .then(() => textElem.value = "")
+                .catch(err => console.error('Message creation failed: ', err));
+        }
     }
 
     const clearAllButton = document.getElementById('clear-all');
